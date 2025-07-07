@@ -21,7 +21,7 @@ def generate_password(length=12, use_uppercase=True, use_lowercase=True, use_num
     password = [random.choice(pool) for pool in char_pools]
 
     all_chars = ''.join(char_pools)
-    password.extend(random.choice(all_chars, k=length - len(password)))
+    password.extend(random.choices(all_chars, k=length - len(password)))
 
     random.shuffle(password)
 
@@ -31,16 +31,27 @@ def main():
     print("Welcoome to the password generator")
     try:
         length = int(input("Enter desired password lenght (8-20):  ")) 
-        use_uppercase = input("include uppercase letters? Yes/No:  ") == "y"
-        use_lowercase = input("Inlude lowercase letters? Yes/No:  ") == "y"
-        use_numbers = input("Include Numbers? Yes/ No:  ") == "y"
-        use_specials = input("Include special characters? Yes/No:  ") == "y"
+        use_uppercase = input("include uppercase letters? Yes/No:  ") == "yes"
+        use_lowercase = input("Inlude lowercase letters? Yes/No:  ") == "yes"
+        use_numbers = input("Include Numbers? Yes/ No:  ") == "yes"
+        use_specials = input("Include special characters? Yes/No:  ") == "yes"
     
         password = generate_password(length, use_uppercase, use_lowercase, use_numbers, use_specials)
 
         print(f'Generated Password: {password}')
         print("Password copied to clipboard")
 
+        try:
+            import pyperclip
+            pyperclip.copy(password)
+        except ImportError:
+            print('You need to install pyperclip to have this feature!')
+            #pip install pyperclip
+
+    except ValueError as e:
+            print(f'Error: {e}')
+
+main()
 
 
 
